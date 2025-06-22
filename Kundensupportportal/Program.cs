@@ -9,9 +9,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSyncfusionBlazor();
 
-var app = builder.Build();
 //Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(builder.Configuration["SyncfusionLicenseKey"]);
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
