@@ -1,0 +1,91 @@
+﻿@page "/support/create-ticket"
+
+<section class="bg-gray-50 dark:bg-gray-950">
+    <div class="flex md:justify-between flex-wrap">
+        <div class="w-full md:w-2/3 bg-gray-50 dark:bg-gray-950">
+            <div class="w-full md:w-4/5 lg:flex lg:justify-center lg:items-center mx-auto bg-white dark:bg-gray-900">
+                <div class="py-5 px-3 md:px-6 xl:px-11 xl:py-6 w-full max-w-6xl">
+                    <form>
+                        <div class="grid grid-cols-1 gap-5 w-full">
+                            <h5 class="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Create Ticket</h5>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Brand :</label>
+                                <SfDropDownList TItem="object" TValue="string" Index="0" Placeholder="Choose a brand" DataSource="@BrandData">
+                                    <DropDownListFieldSettings Text="Text" Value="Value"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                                <div class="flex pt-1">
+                                    <SfCheckBox TChecked="bool" Label="Make this ticket private" CssClass="e-small" />
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300 mr-3">Requester :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Select Resolution" />
+                                <div class="absolute right-0">
+                                    <a href="#" class="mr-4 text-sm font-medium text-gray-700 dark:text-white">Cc</a>
+                                    <a href="#" class="text-sm font-medium text-gray-700 dark:text-white">Bcc</a>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300 mr-3">Assignee :</label>
+                                <SfRadioButton TChecked="bool" Label="Auto Assign" Checked="true" />
+                                <SfRadioButton TChecked="bool" Label="Select Agent" CssClass="ml-6" />
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Subject :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Enter Subject" />
+                            </div>
+                            <div class="w-full">
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Description :</label>
+                                <SfRichTextEditor TValue="string" Placeholder="@PlaceholderText" CssClass="w-full">
+                                    <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
+                                </SfRichTextEditor>
+                            </div>
+                            <div class="mb-6">
+                                <SfUploader TValue="object" AutoUpload="false" Multiple="true" CssClass="text-center">
+                                    <UploaderAsyncSettings SaveUrl="https://blazor.syncfusion.com/services/production/api/FileUploader/Save"
+                                                           RemoveUrl="https://blazor.syncfusion.com/services/production/api/FileUploader/Remove">
+                                    </UploaderAsyncSettings>
+                                    <UploaderButtons Browse="Browse or drop files here"></UploaderButtons>
+                                </SfUploader>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Priority :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Normal" />
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Category :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Subject" />
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Type :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Select" />
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Tags :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Select Tags" />
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Watchers :</label>
+                                <SfDropDownList TItem="string" TValue="string" Placeholder="Select Watchers" />
+                            </div>
+                        </div>
+                    </form>
+                    <div class="flex justify-end gap-2 mt-4">
+                        <SfButton Content="Cancel" />
+                        <SfButton CssClass="e-primary" Content="Create" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-1/3 bg-white dark:bg-gray-900">
+            <h5 class="px-6 py-5 text-lg font-semibold text-gray-900 dark:text-white">Requester Details</h5>
+            <div class="text-center m-auto p-8">
+                <img class="m-auto w-24" src="/assets/images/sample-browser/user-group.png" alt="user group" />
+                <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Choose a requester</h4>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Details about the requester you wish to add a ticket for will appear here
+                </span>
+            </div>
+        </div>
+    </div>
+</section>

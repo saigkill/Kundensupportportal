@@ -1,0 +1,26 @@
+﻿::deep .e-ddl.e-input-group.e-control-wrapper::before {
+    content: "\e754";
+    font-family: "e-icons";
+    font-size: 16px;
+    position: absolute;
+    left: 10px;
+    top: 3px;
+    pointer-events: none;
+}
+
+::deep .e-ddl.e-input-group .e-input {
+    padding-left: 40px !important;
+}
+
+::deep .e-dropdown-btn.help .e-caret {
+    display: none !important;
+}
+
+::deep .e-menu-container.e-hamburger .e-menu-parent {
+    box-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.05);
+    right: auto;
+    overflow-y: hidden;
+    left: 0;
+    width: 210px;
+    z-index: 1;
+}

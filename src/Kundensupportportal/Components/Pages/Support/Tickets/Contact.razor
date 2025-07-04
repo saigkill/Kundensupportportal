@@ -1,0 +1,138 @@
+﻿@page "/support/contacts"
+
+<section class="overflow-hidden">
+    <div class="flex justify-between px-6 py-2 border-b border-gray-200 dark:border-gray-700 flex-col lg:flex-row gap-4">
+        <div class="w-full sm:max-w-52 shrink-1">
+            <div class="e-input-group">
+                <span class="e-input-group-icon e-icons e-search"></span>
+                <input class="e-input !pl-0" type="text" placeholder="Search" aria-label="search" role="textbox" />
+            </div>
+        </div>
+        <div class="flex gap-3 flex-wrap shrink-0">
+            <SfDropDownButton CssClass="e-outline e-primary" IconCss="e-icons e-sorting-1" Content="Created - Desc"
+                              aria-label="choose the sorting options">
+            </SfDropDownButton>
+            <SfButton aria-label="export data">
+                <i class="e-btn-icon e-icons e-export sm:mr-2"></i>
+                <span class="hidden sm:inline-block">Export</span>
+            </SfButton>
+            <SfButton aria-label="import data">
+                <i class="e-btn-icon e-icons e-plus sm:mr-2"></i>
+                <span class="hidden sm:inline-block">Import</span>
+            </SfButton>
+            <SfButton CssClass="e-primary" Content="Add Contact" aria-label="add new contact" />
+            <SfButton aria-label="filter options">
+                <i class="e-btn-icon e-icons e-filter sm:mr-2"></i>
+                <span class="hidden sm:inline-block">Filter</span>
+            </SfButton>
+        </div>
+    </div>
+    <div class="flex h-screen overflow-hidden">
+        <div class="shrink-0 lg:w-64 relative z-10">
+            <SfButton CssClass="e-flat absolute inline-block lg:hidden top-0.5 left-0.5 e-small e-round"
+                      IconCss="e-icons e-chevron-right" @onclick="ToggleSidebar" aria-label="toggle sidebar" />
+            <SfSidebar CssClass="!border-r !border-l !border-gray-200 dark:!border-gray-700 !bg-gray-50 dark:!bg-gray-950"
+                       Style="display: block; position: absolute; width: 256px" Type="SidebarType.Auto"
+                       @bind-IsOpen="SidebarToggle" CloseOnDocumentClick="CloseOnClick"
+                       aria-label="main navigation menu">
+                <div class="p-3 mb-4">
+                    <div class="flex justify-between mb-2.5">
+                        <p class="text-lg font-medium text-gray-900 dark:text-white">Views</p>
+                        <SfButton CssClass="e-primary e-flat" Content="Create" aria-label="create" />
+                    </div>
+                    <div class="e-input-group">
+                        <span class="e-input-group-icon e-icons e-search"></span>
+                        <input class="e-input !pl-0" type="text" placeholder="Search" aria-label="search" role="textbox" />
+                        <span class="e-input-group-icon e-icons e-filter !border-l"></span>
+                    </div>
+                </div>
+                <SfListView TValue="ContactCategory" DataSource="@ContactCategories" CssClass="!border-0">
+                    <ListViewFieldSettings TValue="ContactCategory" Id="Id" Text="Field"></ListViewFieldSettings>
+                    <ListViewTemplates TValue="ContactCategory">
+                        <Template>
+                            <div>
+                                <p>@((context as ContactCategory).Field)</p>
+                            </div>
+                        </Template>
+                    </ListViewTemplates>
+                </SfListView>
+            </SfSidebar>
+        </div>
+        <div class="p-6 sub-container grow z-0 w-full lg:w-auto">
+            <div class="h-full bg-gray-50 dark:bg-gray-950">
+                <SfGrid DataSource="@ContactDetailsData" RowHeight="44" GridLines="GridLine.None">
+                    <GridColumns>
+                        <GridColumn Type="ColumnType.CheckBox" IsPrimaryKey="true" TextAlign="TextAlign.Center" Width="40" />
+                        <GridColumn Field="Profile.Name" HeaderText="Name" TextAlign="TextAlign.Left" Width="240">
+                            <Template>
+                                @{
+                                    var data = (context as ContactDetail);
+                                    <div class="flex gap-3 items-center py-1">
+                                        <div class="w-8 h-8">
+                                            @if (!string.IsNullOrEmpty(data.Profile.Avatar))
+                                            {
+                                                <span class="e-avatar e-avatar-circle e-avatar-small"
+                                                      style="background-image: url('/assets/images/common/avatar/@data.Profile.Avatar')"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="e-avatar e-avatar-circle e-avatar-small @(colorThemeClass(data.Profile.ColorTheme))">
+                                                    @data.Profile.Initial
+                                                </span>
+                                            }
+                                        </div>
+                                        <div class="text-sm">
+                                            <p class="text-gray-900 dark:text-gray-50">@data.Profile.Name</p>
+                                        </div>
+                                    </div>
+                                }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn Field="Email" HeaderText="Email" TextAlign="TextAlign.Left" Width="240" />
+                        <GridColumn Field="Group" HeaderText="Primary Contact Group" Width="240">
+                            <Template>
+                                @{
+                                    var data = (context as ContactDetail);
+                                    <p>@(data.Group == "None" ? "--" : data.Group)</p>
+                                }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn Field="Status" HeaderText="Status" Width="144">
+                            <Template>
+                                @{
+                                    var data = (context as ContactDetail);
+                                    <div class="e-bigger">
+                                        @if (data.Status == "unverified")
+                                        {
+                                            <span class="flex items-center gap-2 text-red-600">
+                                                <i class="e-icons e-circle-close !text-red-600"></i>@data.Status
+                                            </span>
+                                        }
+                                        else if (data.Status == "verified")
+                                        {
+                                            <span class="flex items-center gap-2 text-green-700 dark:text-green-500">
+                                                <i class="e-icons e-circle-check !text-green-700 dark:text-green-500"></i>@data.Status
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>unknown.</span>
+                                        }
+                                    </div>
+                                }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn HeaderText="Action" Width="110">
+                            <Template>
+                                <div class="e-small py-2">
+                                    <SfButton CssClass="e-flat me-1" IconCss="e-icons e-edit" aria-label="edit details" />
+                                    <SfButton CssClass="e-flat" IconCss="e-icons e-more-vertical-1" aria-label="more options" />
+                                </div>
+                            </Template>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
+</section>

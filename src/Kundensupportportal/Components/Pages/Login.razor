@@ -1,32 +1,32 @@
 ﻿@page "/"
+
 @inject NavigationManager Navigation
 
 <PageTitle>Login</PageTitle>
-
 <section class="bg-gray-50 dark:bg-gray-950">
     <div class="flex items-center justify-center min-h-screen">
         <div class="w-full max-w-md rounded-lg px-4 py-14 md:px-6 md:py-20">
             <div class="flex justify-center mb-6">
-                <img class="mr-2" src="assets/images/common/brand-logos/png/coat-of-arms.png" width="5%" alt="company logo" />
-                <h2 class="text-center text-gray-900 dark:text-white text-xl font-semibold">Demo Company</h2>
+                <img class="mr-2" src="assets/images/common/brand-logos/svg/vector.svg" alt="company logo" />
+                <h2 class="text-center text-gray-900 dark:text-white text-xl font-semibold">Company Name</h2>
             </div>
             <h2 class="text-2xl font-semibold text-gray-900 dark:text-white text-center mb-2">Sign in</h2>
             <p class="text-md text-center text-gray-700 dark:text-gray-300">Enter your credentials to sign in</p>
             <form action="#" class="mt-6 mb-6" onsubmit="event.preventDefault();">
                 <div class="mb-4">
                     <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                    <SfTextBox CssClass="e-bigger" Type="InputType.Email" Placeholder="Email" FloatLabelType="FloatLabelType.Never" aria-label="enter your email address" role="textbox"></SfTextBox>
+                    <SfTextBox CssClass="e-bigger" Type="InputType.Email" @bind-Value="LoginData.Email" Placeholder="Email" FloatLabelType="FloatLabelType.Never" aria-label="enter your email address" role="textbox"></SfTextBox>
                 </div>
                 <div class="mb-5 relative">
                     <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                    <SfTextBox CssClass="e-bigger bg-none" Type="InputType.Password" Placeholder="Password" FloatLabelType="FloatLabelType.Never" aria-label="enter your email password" role="textbox"></SfTextBox>
+                    <SfTextBox CssClass="e-bigger bg-none" Type="InputType.Password" @bind-Value="LoginData.Password" Placeholder="Password" FloatLabelType="FloatLabelType.Never" aria-label="enter your email password" role="textbox"></SfTextBox>
                 </div>
                 <div class="flex items-center justify-between mb-6">
-                    <SfCheckBox TChecked="Boolean" CssClass="e-bigger" Label="Remember me" aria-label="remember me" role="checkbox"></SfCheckBox>
+                    <SfCheckBox TChecked="Boolean" @bind-Checked="LoginData.RememberMe" CssClass="e-bigger" Label="Remember me" aria-label="remember me" role="checkbox"></SfCheckBox>
                     <a href="javascript:void(0);" class="text-primary-600 dark:text-primary-400 font-medium text-base" style="padding-right: 0 !important;" aria-label="forgot password" role="link">Forgot password?</a>
                 </div>
                 <div class="e-bigger mt-6">
-                    <SfButton CssClass="w-full e-primary e-btn" type="submit" Onclick="NavigateToModule" aria-label="sign in" role="button">Sign in</SfButton>
+                    <SfButton CssClass="w-full e-primary e-btn" type="submit" @onclick="NavigateToModule" aria-label="sign in">Sign in</SfButton>
                 </div>
             </form>
             <div>
@@ -53,8 +53,7 @@
     </div>
 </section>
 
-@code
-{
+@code {
     private LoginModel LoginData = new LoginModel();
 
     private void NavigateToModule()
@@ -64,8 +63,8 @@
 
     public class LoginModel
     {
-        public string Email { get; set; } = "himself@saschamanns.de";
-        public string Password { get; set; } = "pass";
-        public string RememberMe { get; set; } = "true";
+        public string Email { get; set; } = "supporthub@example.com";
+        public string Password { get; set; } = "Example@123";
+        public bool RememberMe { get; set; }
     }
 }

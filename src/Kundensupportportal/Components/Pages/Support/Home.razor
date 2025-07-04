@@ -1,0 +1,91 @@
+﻿@page "/support/home"
+
+@namespace Kundensupportportal.Components.Pages
+
+<section class="p-6 flex flex-col gap-6 bg-gray-50 dark:bg-gray-950">
+    <ul class="flex justify-between lg:items-center gap-4 flex-col lg:flex-row">
+        <li class="flex gap-3 flex-wrap">
+            <SfRadioButton Label="My Tickets" Name="UserOptions" Value="Tickets" @bind-Checked="TicketFilterChecked"></SfRadioButton>
+            <SfRadioButton Label="My Groups" Name="UserOptions" Value="Groups" @bind-Checked="TicketFilterChecked"></SfRadioButton>
+            <SfRadioButton Label="Agent" Name="UserOptions" Value="Agent" @bind-Checked="TicketFilterChecked"></SfRadioButton>
+        </li>
+        <li class="flex gap-4 flex-wrap">
+            <SfButton CssClass="e-link px-0">Requested Approvals (0)</SfButton>
+            <SfButton CssClass="e-link px-0">Pending Approvals (0)</SfButton>
+            <SfButton CssClass="e-link px-0">Requested Activities (1)</SfButton>
+        </li>
+    </ul>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Assigned Tickets</h3>
+            <div class="e-card e-bigger rounded-lg pt-6 grow">
+                <div class="e-card-content grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                    @foreach (var status in new[] { "Pending", "On Hold", "Resolution Due", "Response Due" })
+                    {
+                        <div class="space-y-3 lg:space-y-4 font-medium">
+                            <p class="truncate dark:text-gray-300">@status</p>
+                            <p class="text-xl font-semibold">@GetStatusCount(status)</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Customer Satisfaction</h3>
+            <div class="e-card e-bigger rounded-lg pt-6 grow">
+                <div class="e-card-content grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                    @foreach (var item in SatisfactionData)
+                    {
+                        <div class="space-y-3 lg:space-y-4 font-medium">
+                            <p class="@item.Color">@item.Label</p>
+                            <div>
+                                <p class="text-xl font-semibold">@item.Percentage</p>
+                                <p class="text-gray-700 dark:text-gray-300">@item.Ratings</p>
+                            </div>
+                        </div>
+                    }
+                    <div class="flex sm:justify-center">
+                        <SfProgressBar Type="ProgressType.Circular" Width="100" Height="100" ProgressColor="#15803d" Value="80" TrackThickness="4" ProgressThickness="4">
+                            <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                            <ProgressBarAnnotations>
+                                <ProgressBarAnnotation>
+                                    <ContentTemplate>
+                                        <div class="text-base text-gray-900 dark:text-white"><span>80%</span></div>
+                                    </ContentTemplate>
+                                </ProgressBarAnnotation>
+                            </ProgressBarAnnotations>
+                        </SfProgressBar>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="space-y-4">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pending Tickets</h3>
+        <SfGrid DataSource="TicketData" AllowPaging="true" Width="100%" RowHeight="44" GridLines="GridLine.None">
+            <GridPageSettings PageSizes="true" PageCount="4"></GridPageSettings>
+            <GridColumns>
+                <GridColumn Field="TicketId" HeaderText="Ticket ID" Width="80"></GridColumn>
+                <GridColumn Field="Subject" HeaderText="Subject" Width="434"></GridColumn>
+                <GridColumn Field="CreatedOn" HeaderText="Created On" Width="203" Format="MMM dd, yyyy hh:mm tt"></GridColumn>
+                <GridColumn Field="Status" HeaderText="Status" Width="223">
+                    <Template>
+                        @{
+                            var status = ((Ticket)context).Status;
+                            var className = status switch
+                            {
+                                "Follow-up Scheduled" => "text-orange-800 dark:text-orange-500",
+                                "Open" => "text-primary-600",
+                                _ => ""
+                            };
+                        }
+                        <span class="@className">
+                            @status
+                        </span>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="Brand" HeaderText="Brand" Width="170"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</section>

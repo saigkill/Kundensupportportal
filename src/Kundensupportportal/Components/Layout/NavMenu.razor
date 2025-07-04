@@ -1,29 +1,74 @@
-﻿<section class="bg-gray-50 dark:bg-gray-950">
-    <div>
-        <div class="border border-r-0 border-l-0 border-gray-200 dark:border-gray-600">
-            <SfAppBar CssClass="shadow-none">
-                <div class="px-4 py-5 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <span class="text-lg font-semibold text-gray-900 dark:text-white">Demo Company</span>
-                    </div>
-                    <div class="e-appbar-spacer"></div>
-                    <div class="hidden lg:block flex items-center pr-4">
-                        <div class="e-input-group">
-                            <input class="e-input" type="text" placeholder="Search" aria-label="search" role="textbox" />
-                            <span class="e-input-group-icon e-icons e-search"></span>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <SfButton CssClass="mr-2.5 hidden sm:block e-primary" IconCss="e-icons e-plus" IconPosition="IconPosition.Left" Content="New Widget" Type="button" aria-label="add new widget" role="button"></SfButton>
-                        <SfButton CssClass="e-icons e-search hidden sm:block lg:hidden mr-2.5 e-flat" Type="button" aria-label="search" role="button"></SfButton>
-                        <SfButton CssClass="sf-icon-notification-bell-02 leading-3 text-base mr-2.5 e-flat" Type="button" aria-label="notification" role="button"></SfButton>
-                        <SfButton CssClass="e-icons e-grid-view hidden sm:block mr-2.5 e-flat" Type="button" aria-label="grid view" role="button"></SfButton>
-                        <span class="e-avatar e-avatar-small e-avatar-circle">
-                            <img src="assets/images/common/avatar/profile-pic.png" alt="profile picture" />
-                        </span>
-                    </div>
+﻿@inject NavigationManager Navigation
+
+<section class="bg-gray-50">
+    <div class="bg-gray-100 border border-gray-200">
+        <div class="flex items-center justify-between py-2 ms-3 sm:ms-6 me-6">
+            <div class="flex items-center">
+                <span id="menu" class="block sm:hidden">
+                    <SfMenu @ref="MenuObj" TValue="SupportMenuItem" HamburgerMode="true" Title="" Items="@SupportMenuItems">
+                        <MenuEvents TValue="SupportMenuItem" ItemSelected="NavigateToModule"></MenuEvents>
+                    </SfMenu>
+                </span>
+                <span class="text-lg font-semibold text-gray-900">@Title</span>
+            </div>
+            <div class="flex items-center">
+                <div class="hidden lg:block mr-4">
+                    <SfAutoComplete TValue="string" TItem="SearchDataItem" DataSource="@SearchData" Placeholder="Search" Width="336px">
+                        <AutoCompleteFieldSettings Value="Ticket"></AutoCompleteFieldSettings>
+                        <AutoCompleteTemplates TItem="SearchDataItem">
+                            <HeaderTemplate>
+                                <div className="p-5 border-b border-gray-200 mb-2">
+                                    <SfChip CssClass="!border-gray-200">
+                                        <ChipItems>
+                                            <ChipItem Text="Ticket Id" CssClass="e-outline !text-sm !font-medium !px-3 !py-1 !rounded-2xl !h-8 !ml-0"></ChipItem>
+                                            <ChipItem Text="Status" CssClass="e-outline !text-sm !font-medium !px-3 !py-1 !rounded-2xl !h-8 !ml-0"></ChipItem>
+                                            <ChipItem Text="Priority" CssClass="e-outline y!text-sm !font-medium !px-3 !py-1 !rounded-2xl !h-8 !ml-0"></ChipItem>
+                                        </ChipItems>
+                                    </SfChip>
+                                </div>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <span class='indent-0 e-avatar e-avatar-medium shrink-0 text-sm bg-@((context as SearchDataItem).ColorTheme.ToLower())-50 text-@((context as SearchDataItem).ColorTheme.ToLower())-500'>
+                                    <span class='text-2xl @((context as SearchDataItem).FontIcon)'></span>
+                                </span>
+                                <div class='w-full indent-0'>
+                                    <div class='text-sm !font-medium flex items-center !text-wrap mb-0.5'>@((context as SearchDataItem).Ticket)</div>
+                                    <div class='text-gray-600 font-normal flex items-center !text-wrap text-sm'>@((context as SearchDataItem).Id), Created on: @((context as SearchDataItem).CreatedDate)</div>
+                                </div>
+                            </ItemTemplate>
+                        </AutoCompleteTemplates>
+                    </SfAutoComplete>
                 </div>
-            </SfAppBar>
+                <SfDropDownButton Content="Create" CssClass="e-primary e-outline mr-3 hidden sm:block">
+                    <DropDownButtonEvents ItemSelected="NavigateToCreateTicket"></DropDownButtonEvents>
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Text="Ticket" IconCss="e-icons e-notes"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Article" IconCss="e-icons e-folder"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Activity" IconCss="e-icons e-agenda-date-range"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+                <SfDropDownButton class="e-icons sf-icon-help-circle help e-medium e-flat hidden sm:block mr-3">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Text="Knowledge Base" IconCss="e-icons e-notes"></DropDownMenuItem>
+                        <DropDownMenuItem Text="BoldDesk AI Assistant" IconCss="e-icons sf-icon-phone-01 text-base"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Tutorial Videos" IconCss="e-icons e-video"></DropDownMenuItem>
+                        <DropDownMenuItem Text="API Docs" IconCss="e-icons e-folder"></DropDownMenuItem>
+                        <DropDownMenuItem Text="FAQ" IconCss="e-icons e-file-new"></DropDownMenuItem>
+                        <DropDownMenuItem Text="What’s New" IconCss="e-icons sf-icon-announcement-01 text-base"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Learning Center" IconCss="e-icons e-bookmark"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Keyboard Shortcuts" IconCss="sf-icon-keyboard-01"></DropDownMenuItem>
+                        <DropDownMenuItem Text="Contact Support" IconCss="sf-icon-headphones-07"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+                <SfButton CssClass="e-icons e-bookmark e-medium e-flat hidden sm:block mr-3"></SfButton>
+                <SfButton CssClass="sf-icon-notification-bell-02 text-base leading-3 e-flat mr-2 sm:mr-3"></SfButton>
+                <div class="relative h-8">
+                    <span class="e-avatar e-avatar-circle e-avatar-small !bg-indigo-600 !text-white">JP</span>
+                    <div class="w-3 h-3 e-icons e-check rounded-full bg-green-700 text-white absolute border
+                                 border-white flex items-center justify-center"
+                         style="bottom: -2px; right: -2px; font-size: 8px;"></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

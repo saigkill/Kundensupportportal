@@ -1,0 +1,10 @@
+﻿::deep .conversations .e-list-item {
+    border: none;
+    height: auto;
+    padding: 8px;
+}
+
+    ::deep .conversations.e-listview .e-list-item.e-active,
+    ::deep .conversations .e-list-item:hover {
+        background-color: transparent;
+    }

@@ -1,0 +1,69 @@
+﻿@using Kundensupportportal.Components.Pages.Support.Tickets
+
+<section class="bg-gray-50 dark:bg-gray-950">
+    <div class="w-full">
+        <SfGrid DataSource="@TicketDataService.TicketDataList" Width="100%" AllowPaging="true" GridLines="GridLine.None">
+            <GridColumns>
+                <GridColumn Type="ColumnType.CheckBox" TextAlign="TextAlign.Center" Width="40"></GridColumn>
+                <GridColumn Width="70" TextAlign="TextAlign.Center">
+                    <Template>
+                        <SfButton IconCss="e-icons e-more-vertical-1" CssClass="e-flat" Content=" " aria-label="more options"></SfButton>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="TicketId" HeaderText="Ticket ID" Width="75" TextAlign="TextAlign.Left">
+                    <Template>
+                        <a class="text-primary-700 dark:text-primary-500 font-medium" href="javascript:void(0);" aria-label="ticket ID" role="link">@((context as TicketData).TicketId)</a>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="Subject" HeaderText="Subject" Width="300" TextAlign="TextAlign.Left"></GridColumn>
+                <GridColumn Field="Status" HeaderText="Status" Width="105">
+                    <Template>
+                        @{
+                            var statusClassMap = new Dictionary<string, string>
+                                                {
+                                                { "In-progress", "e-badge e-badge-info !px-2 flex gap-1 w-max" },
+                                                { "Open", "e-badge e-badge-danger !px-2 flex gap-1 w-max" },
+                                                { "Closed", "e-badge e-badge-success !px-2 flex gap-1 w-max" }
+                                                };
+                            var statusClass = statusClassMap.ContainsKey((context as TicketData).Status) ? statusClassMap[(context as TicketData).Status] : "";
+                        }
+                        <div class="e-bigger"
+                            <span class="@statusClass">@((context as TicketData).Status)</span>
+                        </div>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="PriorityLevel" HeaderText="Priority" Width="110">
+                    <Template>
+                        @{
+                            var priorityClassMap = new Dictionary<string, string>
+                                                {
+                                                { "High", "e-icons e-arrow-up !text-red-700 dark:!text-red-400" },
+                                                { "Medium", "e-icons e-arrow-right !text-orange-700 dark:!text-orange-500" },
+                                                { "Low", "e-icons e-arrow-down !text-cyan-700 dark:!text-cyan-600" }
+                                                };
+                            var priorityClass = (priorityClassMap.ContainsKey((context as TicketData).PriorityLevel)) ? priorityClassMap[(context as TicketData).PriorityLevel] : "";
+                        }
+                        <span class="flex gap-1 items-center">
+                            <span class="@priorityClass"></span>@((context as TicketData).PriorityLevel)
+                        </span>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="Requester" HeaderText="Requested by" Width="250">
+                    <Template>
+                        <div class="flex gap-3 items-center py-1.5">
+                            <div class="w-8 h-8">
+                                <span class="e-avatar e-avatar-circle e-avatar-small" style="background-image: url('/assets/images/common/avatar/@((context as TicketData).Avatar)')"></span>
+                            </div>
+                            <div class="flex flex-col text-sm">
+                                <p class="text-gray-900 dark:text-gray-50">@((context as TicketData).Requester)</p>
+                                <p class="text-gray-500 dark:text-gray-400">@((context as TicketData).Mail)</p>
+                            </div>
+                        </div>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="CreatedTime" HeaderText="Create Time" Width="170" TextAlign="TextAlign.Left"></GridColumn>
+            </GridColumns>
+            <GridPageSettings PageCount="4"></GridPageSettings>
+        </SfGrid>
+    </div>
+</section>

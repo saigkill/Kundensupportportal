@@ -1,0 +1,87 @@
+﻿@page "/support/settings"
+<section class="flex h-full bg-gray-50 dark:bg-gray-950">
+    <div class="shrink-0 lg:w-64 relative z-10">
+        <SfSidebar class="!border-r !border-l !border-gray-200 dark:!border-gray-700 !bg-gray-50 dark:!bg-gray-950"
+                   Width="250px" aria-label="main navigation menu" Style="display: block; position: absolute"
+                   Type="SidebarType.Auto" @bind-IsOpen="SidebarToggle" CloseOnDocumentClick="CloseOnClick">
+            <div class="shrink-0">
+                <div class="p-3">
+                    <div class="flex justify-between items-center mb-2.5">
+                        <p class="text-base text-gray-700 dark:text-gray-300">Configuration</p>
+                        <SfButton CssClass="e-flat e-round" @onclick="ToggleSidebar" IconCss="e-icons e-chevron-left" aria-label="create" />
+                    </div>
+                    <div class="e-input-group">
+                        <input class="e-input" type="text" placeholder="Search" aria-label="search" />
+                    </div>
+                </div>
+                <SfListView TValue="SettingCategory" DataSource="@SettingCategories" ShowHeader="true" CssClass="!border-0">
+                    <ListViewFieldSettings TValue="SettingCategory" Id="Id" Text="Text"></ListViewFieldSettings>
+                    <ListViewTemplates TValue="SettingCategory">
+                        <HeaderTemplate>
+                            <div>MANAGE</div>
+                        </HeaderTemplate>
+                        <Template>
+                            @{
+                                var data = (context as SettingCategory);
+                            }
+                            <div>
+                                <p>@data.Text</p>
+                            </div>
+                        </Template>
+                    </ListViewTemplates>
+                </SfListView>
+            </div>
+        </SfSidebar>
+    </div>
+    <div class="sub-container grow w-full lg:w-auto">
+        <div class="flex justify-between gap-3 space-y-6 space-y-0 items-center p-6 pb-1 overflow-hidden">
+            <div class="flex gap-3 items-center">
+                <div class="flex gap-3">
+                    <SfButton @onclick="ToggleSidebar" CssClass="inline-block lg:hidden e-small shrink-0 e-flat e-round" IconCss="e-icons e-chevron-right" aria-label="sidebar toggle" />
+                    <SfDropDownButton CssClass="w-full" Content="All Brands" aria-label="all brands">
+                    </SfDropDownButton>
+                    <SfButton CssClass="e-icons e-search block xl:hidden" aria-label="search" />
+                </div>
+                <div class="w-64 hidden xl:block">
+                    <div class="e-input-group">
+                        <input class="e-input" type="text" placeholder="Search Ticket ID" aria-label="search" />
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 items-center !mt-0">
+                <SfButton aria-label="export data">
+                    <i class="e-btn-icon e-icons e-export sm:mr-2 !py-1 sm:!py-0"></i>
+                    <span class="hidden md:inline-block">Export</span>
+                </SfButton>
+                <SfDropDownButton CssClass="hidden md:block" IconCss="e-icons e-sorting-1" Content="Created - Desc" aria-label="sort by created descending">
+                </SfDropDownButton>
+                <SfDropDownButton CssClass="hidden sm:block !py-1" IconCss="e-icons e-notes" Content=" " aria-label="notes">
+                </SfDropDownButton>
+                <SfButton CssClass="hidden sm:block !py-1" IconCss="e-icons e-filter" aria-label="filter options" />
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="bg-gray-50 dark:bg-gray-950">
+                <SfGrid TValue="Ticket" DataSource="@TicketData" RowHeight="44" Width="100%">
+                    <GridColumns>
+                        <GridColumn Field="View" HeaderText="View Name" Width="240" />
+                        <GridColumn Field="Owner" HeaderText="Owner" Width="150" />
+                        <GridColumn Field="Scope" HeaderText="Assigned Scope" Width="140" />
+                        <GridColumn Field="Status" HeaderText="Status" Width="140">
+                            <Template>
+                                <span class="e-badge e-badge-success">Active</span>
+                            </Template>
+                        </GridColumn>
+                        <GridColumn HeaderText="Action" Width="60" TextAlign="TextAlign.Right">
+                            <Template>
+                                <div class="e-small py-2">
+                                    <SfButton CssClass="e-flat" IconCss="e-icons e-more-vertical-1" aria-label="more options" />
+                                </div>
+                            </Template>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
+</section>

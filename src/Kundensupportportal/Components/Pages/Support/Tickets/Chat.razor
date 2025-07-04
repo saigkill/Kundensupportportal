@@ -1,0 +1,109 @@
+﻿@page "/support/chat"
+
+<section class="flex h-full bg-gray-50 dark:bg-gray-950">
+    <div class="w-full sm:w-80 bg-white dark:bg-gray-900">
+        <div class="py-4 px-2">
+            <SfDropDownButton CssClass="w-full" Content="Bold BI Brand Edit Test" aria-label="dropdown button" />
+        </div>
+        <SfListView DataSource="@ContactData" CssClass="e-list-template !border-0" Width="100%" aria-label="list of chat conversations">
+            <ListViewFieldSettings TValue="ChatDataModel" Id="Id" Text="Name"></ListViewFieldSettings>
+            <ListViewTemplates TValue="ChatDataModel">
+                <Template>
+                    @{
+                        var data = (context as ChatDataModel);
+                        <div class="e-list-wrapper flex justify-between items-center !px-2 sm:!px-3">
+                            <div class="flex items-center">
+                                <span class="flex items-center gap-4">
+                                    <span class="e-avatar e-avatar-small e-avatar-circle">
+                                        <img src="/assets/images/common/avatar/@data.Avatar" alt="profile" />
+                                    </span>
+                                </span>
+                                <div class="ml-3 flex flex-col w-11/12">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-base text-gray-900 dark:text-white">@data.Name</span>
+                                    </div>
+                                    <span class="!text-sm !text-wrap !line-clamp-1 text-gray-700 dark:text-white w-full truncate">@data.Content</span>
+                                </div>
+                            </div>
+                            <span class="e-icons @(data.Send ? "e-arrow-right-up" : "e-arrow-right-up rotate-180")"></span>
+                        </div>
+                    }
+                </Template>
+            </ListViewTemplates>
+        </SfListView>
+    </div>
+
+    <div class="border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 w-full h-full hidden sm:block">
+        <div id="chat-header" class="flex flex-col items-center pb-6 rounded-xl overflow-hidden">
+            <div class="w-full p-2">
+                <div class="flex items-center justify-between py-1 pl-2 sm:pl-4 pr-2">
+                    <div class="flex items-center">
+                        <span class="flex items-center gap-3">
+                            <div class="relative h-8">
+                                <span class="e-avatar e-avatar-circle e-avatar-small" style="background-image: url('/assets/images/common/avatar/avatar-9.jpg')"></span>
+                                <div class="w-3 h-3 rounded-full bg-green-700 dark:bg-green-500 absolute border border-white dark:border-black" style="bottom: -2px; right: -2px"></div>
+                            </div>
+                            <span class="text-base font-semibold text-gray-900 dark:text-white truncate">Leslie Alexander</span>
+                        </span>
+                    </div>
+                    <div class="e-appbar-spacer"></div>
+                    <div class="flex items-center gap-3">
+                        <SfButton CssClass="e-flat e-icons e-search text-base leading-3 sm:block hidden" aria-label="search" />
+                        <div class="border-l h-6 border-gray-200 dark:border-gray-600 sm:block hidden"></div>
+                        <SfButton CssClass="e-flat sf-icon sf-icon-phone-01 text-base sm:block hidden leading-3" aria-label="audio call" />
+                        <SfButton CssClass="e-flat e-icons e-video sm:block hidden" aria-label="video call" />
+                        <SfButton CssClass="e-flat e-icons e-more-vertical-1" aria-label="more options" />
+                    </div>
+                </div>
+            </div>
+            <div class="w-full flex items-center flex-col pt-7 pb-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+                <span class="e-badge e-badge-pill e-badge-secondary border border-gray-200 e-small">Wednesday, Sep 18th</span>
+                <SfListView TValue="ChatDataModel" DataSource="@ChatData" CssClass="conversations !border-0 px-2 sm:px-4 sm:pr-7 lg:pr-12 py-4" Width="100%" Height="100%" aria-label="chat conversations">
+                    <ListViewFieldSettings TValue="ChatDataModel" Id="Id" Text="Name"></ListViewFieldSettings>
+                    <ListViewTemplates TValue="ChatDataModel">
+                        <Template>
+                            @{
+                                var data = (context as ChatDataModel);
+                                if (data.Chat != "receiver")
+                                {
+                                    <div class="flex justify-end ml-auto sm:mr-3 gap-3 items-start w-4/5">
+                                        <div class="flex flex-col gap-1 items-end">
+                                            <div class="py-2 px-3 rounded-lg rounded-se-none bg-gray-100 dark:bg-gray-700">
+                                                <div class="dark:text-gray-50">@data.Text</div>
+                                            </div>
+                                            <div class="flex relative">
+                                                <p class="text-xs text-gray-500">@data.Time</p>
+                                                @if (data.Open == true)
+                                                {
+                                                    <div class="sf-icon sf-icon-double-check-01 ml-0.5 sm:ml-1 leading-4 text-base text-primary-600 dark:text-primary-400"></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="flex justify-start gap-3 items-start sm:w-4/5">
+                                        @if (!string.IsNullOrEmpty(data.Avatar))
+                                        {
+                                            <span class="e-avatar e-avatar-circle e-avatar-small" style="background-image: url('/assets/images/common/avatar/@data.Avatar')"></span>
+                                        }
+                                        <div class="flex flex-col gap-1">
+                                            <div class="py-2 px-3 rounded-lg rounded-ss-none bg-gray-50 dark:bg-gray-800">
+                                                <div class="dark:text-gray-50">@data.Text</div>
+                                            </div>
+                                            <p class="text-xs text-gray-500">@data.Name @data.Time</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </Template>
+                    </ListViewTemplates>
+                </SfListView>
+            </div>
+            <div class="e-bigger w-full text-base px-4 sm:pl-6 sm:pr-12 lg:pr-16 lg:mr-1">
+                <SfTextBox Placeholder="Enter a message" aria-label="enter a message" />
+            </div>
+        </div>
+    </div>
+</section>
